@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ─────────────────────────────────────────────── */
+:root {
+  /* Dark — default */
+  --paper:      #0a0a0a;
+  --paper-tint: #111111;
+  --paper-hi:   #191919;
+  --ink:        #f0f0f0;
+  --ink-muted:  #909090;
+  --ink-soft:   #555555;
+  --rule:       #222222;
+  --accent:     #3b82f6;
+  --accent-hi:  #60a5fa;
+  --accent-dim: rgba(59, 130, 246, 0.10);
+}
+
+html[data-theme='light'] {
+  --paper:      #f5f5f5;
+  --paper-tint: #ffffff;
+  --paper-hi:   #eaeaea;
+  --ink:        #0a0a0a;
+  --ink-muted:  #555555;
+  --ink-soft:   #888888;
+  --rule:       #e0e0e0;
+  --accent:     #2563eb;
+  --accent-hi:  #3b82f6;
+  --accent-dim: rgba(37, 99, 235, 0.08);
+}
+
+/* ── Base ───────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    background-color: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+  body { background-color: var(--paper); color: var(--ink); }
+  ::selection { background-color: var(--accent); color: #fff; }
+  a:focus-visible,
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  * { cursor: none; }
+  a, button, [role="button"] { cursor: none; }
+}
+
+/* ── Cursor ─────────────────────────────────────────────────────── */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  transition: transform 0.1s;
+}
+.cursor-ring {
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+}
+.cursor-ring.is-hovered {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.05);
+}
+@media (hover: none) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* ── Stroke / outline text ──────────────────────────────────────── */
+.stroke-text {
+  -webkit-text-stroke: 1.5px var(--ink);
+  color: transparent;
+}
+@media (max-width: 640px) {
+  .stroke-text { -webkit-text-stroke-width: 1px; }
+}
+
+/* ── Header translucent bg ──────────────────────────────────────── */
+.header-opaque {
+  background-color: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+html[data-theme='light'] .header-opaque {
+  background-color: rgba(245, 245, 245, 0.92);
+}
+
+/* ── Marquee strip ──────────────────────────────────────────────── */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 35s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ── Scroll reveal ──────────────────────────────────────────────── */
+.js-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.js-ready [data-reveal].revealed { opacity: 1; transform: translateY(0); }
+.js-ready [data-reveal]:nth-child(2) { transition-delay: 0.08s; }
+.js-ready [data-reveal]:nth-child(3) { transition-delay: 0.16s; }
+.js-ready [data-reveal]:nth-child(4) { transition-delay: 0.24s; }
+.js-ready [data-reveal]:nth-child(5) { transition-delay: 0.32s; }
+.js-ready [data-reveal]:nth-child(6) { transition-delay: 0.40s; }
+
+/* ── Profile avatar ring ─────────────────────────────────────────── */
+.avatar-ring {
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.12), 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+html[data-theme='light'] .avatar-ring {
+  box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.10), 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Project cards ──────────────────────────────────────────────── */
+.project-card {
+  border: 1px solid var(--rule);
+  background-color: var(--paper-tint);
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+.project-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--accent);
+}
+html[data-theme='light'] .project-card:hover {
+  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.12), 0 0 0 1px var(--accent);
+}
+
+/* ── Skill / stack pills ────────────────────────────────────────── */
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.7rem 0.24rem;
+  border-radius: 9999px;
+  border: 1px solid var(--rule);
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  transition: color 0.18s, border-color 0.18s;
+  white-space: nowrap;
+}
+.skill-pill:hover {
+  color: var(--accent-hi);
+  border-color: var(--accent);
+}
+
+/* ── Context badge (project) ────────────────────────────────────── */
+.context-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background-color: var(--accent-dim);
+  color: var(--accent-hi);
+}
+
+/* ── Brand logos ────────────────────────────────────────────────── */
+.brand-mark img {
+  filter: brightness(0) invert(1) opacity(0.28);
+  transition: filter 0.2s ease;
+}
+html[data-theme='light'] .brand-mark img {
+  filter: grayscale(100%) opacity(0.45);
+}
+.brand-mark:hover img {
+  filter: brightness(0) invert(1) opacity(0.75);
+}
+html[data-theme='light'] .brand-mark:hover img {
+  filter: grayscale(0%) opacity(1);
+}
+
+/* ── Scroll indicator bounce ────────────────────────────────────── */
+@keyframes scroll-down {
+  0%, 100% { transform: translateY(0) scaleY(1); opacity: 1; }
+  50%       { transform: translateY(6px) scaleY(0.85); opacity: 0.5; }
+}
+.scroll-indicator { animation: scroll-down 1.8s ease-in-out infinite; }
+
+/* ── Pulsing dot (available) ────────────────────────────────────── */
+.dot-live {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  flex-shrink: 0;
+  animation: pulse-dot 2.5s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55); }
+  50%       { box-shadow: 0 0 0 5px rgba(52, 211, 153, 0); }
+}
+
+/* ── Timeline ───────────────────────────────────────────────────── */
+.timeline-item {
+  position: relative;
+  padding-left: 2rem;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 1px;
+  bottom: 0;
+  background: linear-gradient(to bottom, var(--accent), transparent 90%);
+}
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* ── Print ──────────────────────────────────────────────────────── */
+@media print {
+  header, footer, .cursor-dot, .cursor-ring { display: none !important; }
+  body { background: white !important; color: #000 !important; }
+  a { color: #000; text-decoration: underline; }
+  @page { margin: 1.5cm; }
+}

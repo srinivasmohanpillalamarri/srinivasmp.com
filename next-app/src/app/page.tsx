@@ -1,34 +1,36 @@
-import { Cursor }       from '@/components/Cursor';
-import { ScrollReveal } from '@/components/ScrollReveal';
-import { Header }       from '@/components/Header';
-import { Hero }         from '@/components/Hero';
-import { TechStrip }    from '@/components/TechStrip';
-import { About }        from '@/components/About';
-import { Experience }   from '@/components/Experience';
-import { Projects }     from '@/components/Projects';
-import { Stack }        from '@/components/Stack';
-import { Contact }      from '@/components/Contact';
-import { Footer }       from '@/components/Footer';
+import { ScrollReveal }      from '@/components/ScrollReveal';
+import { Header }            from '@/components/Header';
+import { Hero }              from '@/components/Hero';
+import { Metrics }           from '@/components/Metrics';
+import { About }             from '@/components/About';
+import { Expertise }         from '@/components/Expertise';
+import { Projects }          from '@/components/Projects';
+import { Journey }           from '@/components/Journey';
+import { Experience }        from '@/components/Experience';
+// <ThoughtLeadership /> is built and styled but unmounted until there are real
+// articles to list — see components/ThoughtLeadership.tsx and the `articles`
+// array in data/resume.ts. Re-add the import and the tag below to restore it.
+import { Testimonials }      from '@/components/Testimonials';
+import { Contact }           from '@/components/Contact';
+import { Footer }            from '@/components/Footer';
 
 export default function Page() {
   return (
     <>
-      <a
-        href="#main"
-        className="absolute left-4 top-2 -translate-y-16 border border-rule bg-paper px-3 py-2 font-mono text-xs text-ink focus:translate-y-0"
-      >
+      <a href="#main" className="skip-link text-[15px] font-medium">
         Skip to content
       </a>
-      <Cursor />
       <ScrollReveal />
       <Header />
       <main id="main">
         <Hero />
-        <TechStrip />
+        <Metrics />
         <About />
-        <Experience />
+        <Expertise />
         <Projects />
-        <Stack />
+        <Journey />
+        <Experience />
+        <Testimonials />
         <Contact />
       </main>
       <Footer />

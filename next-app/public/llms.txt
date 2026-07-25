@@ -1,0 +1,42 @@
+# Srinivas Mohan Pillalamarri
+
+> Software architect and technology leader in Mumbai, India. 30 years in
+> technology since 1996, 20+ of them building enterprise software. Currently
+> VP – Technical at SK Finance Ltd., leading AI programmes for customer-service
+> automation and autonomous quality engineering in regulated digital lending.
+
+## Who he is
+
+Srinivas Mohan Pillalamarri is a software architect and VP – Technical based in
+Mumbai, India. He has worked across nine companies and four countries, in BFSI,
+NBFC digital lending, retail, logistics, HRMS and ERP.
+
+## What he is known for
+
+- Coordinated 196+ engineers on the Microsoft Audit Platform migration from WPF
+  to Angular, with no major delivery failures.
+- Architected a self-generative chatbot platform that cut chatbot build time
+  from weeks to minutes, with redundancy across four AI providers (Anthropic
+  Claude, Azure OpenAI, ChatGPT, Oracle AI).
+- Built SK Test Suite, an autonomous AI testing platform for regulated digital
+  lending covering OWASP Top 10, SAST/DAST and RBI compliance validation.
+- Migrated a 4 GB Fincraft core banking schema from SQL Server to Oracle with
+  zero data loss.
+- Designed a unified ERP covering 23 business verticals at Golden Arrow, Sudan.
+
+## Core technologies
+
+Angular, TypeScript, .NET, C#, Python, FastAPI, SQL Server, Oracle PL/SQL,
+Microsoft Azure, Azure OpenAI, Anthropic Claude, Playwright, Appium, MongoDB,
+React, Next.js.
+
+## Links
+
+- Site: https://srinivasmp.com
+- LinkedIn: https://www.linkedin.com/in/mpsrinivas
+- GitHub: https://github.com/srinivasmohanpillalamarri
+
+## Contact
+
+Open to senior individual contributor, lead and architect roles.
+Email: srinivasmp@hotmail.com

@@ -8,12 +8,23 @@ export type Role = {
   stack?: string[];
 };
 
+/** Motif drawn beside the project — see components/ProjectVisual.tsx */
+export type ProjectMotif =
+  | 'test-matrix'
+  | 'conversation'
+  | 'voice'
+  | 'database'
+  | 'migration'
+  | 'network'
+  | 'schema';
+
 export type Project = {
   title: string;
   blurb: string;
   context?: string;
   stack: string[];
   outcomes: string[];
+  visual: ProjectMotif;
 };
 
 export type SkillGroup = {
@@ -29,10 +40,13 @@ export type Brand = {
 export const profile = {
   name: 'Srinivas Mohan Pillalamarri',
   shortName: 'Srinivas M. P.',
-  title: 'Technical Project Manager · AI Solutions Architect · Full-Stack Engineer',
+  title: 'VP Technical · AI Solutions Architect · Full-Stack Engineer',
   blurb:
-    'I build production AI platforms and the systems that ship them — chatbots, voice-driven survey tools, customer-service apps, and large-scale ERPs. 20+ years across BFSI, Retail, Logistics, HRMS, and ERP.',
-  location: 'Bangalore, India',
+    'I build production AI platforms and the systems that ship them — chatbots, voice-driven survey tools, customer-service apps, and large-scale ERPs. 30 years in technology, 20+ of them building software across BFSI, Retail, Logistics, HRMS, and ERP.',
+  /** ≤160 chars — anything longer is truncated in search results. */
+  metaDescription:
+    'Software architect and VP Technical in Mumbai. 30 years in technology, 20+ building enterprise AI, Angular and .NET systems for banking and lending.',
+  location: 'Mumbai, India',
   email: 'srinivasmp@hotmail.com',
   phone: '+91 8454813227',
   links: {
@@ -66,7 +80,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: 'Leadership',
-    items: ['TPM · 196+ team', 'Multi-country delivery', 'Stakeholder management', 'Agile / Scrum']
+    items: ['VP Technical · 196+ team', 'Multi-country delivery', 'Stakeholder management', 'Agile / Scrum']
   }
 ];
 
@@ -77,6 +91,8 @@ export const brands: Brand[] = [
   { name: 'Oracle', file: 'oracle.svg' },
   { name: 'Microsoft', file: 'microsoft.svg' },
   { name: 'AWS', file: 'amazonwebservices.svg' },
+  { name: 'React', file: 'react.svg' },
+  { name: 'React Native', file: 'reactnative.svg' },
   { name: 'Angular', file: 'angular.svg' },
   { name: 'TypeScript', file: 'typescript.svg' },
   { name: '.NET', file: 'dotnet.svg' },
@@ -93,13 +109,19 @@ export const experience: Role[] = [
     period: '2026 — Present',
     location: 'Mumbai, India',
     summary:
-      'Leading customer-service automation powered by Anthropic Claude AI — app, admin portal, and legacy integrations.',
+      'Leading two AI programmes: customer-service automation on Anthropic Claude, and SK Test Suite — an autonomous quality, security, and compliance platform for regulated lending applications.',
     highlights: [
-      'End-to-end Customer Service App and Admin Portal built on Anthropic Claude AI',
-      'Integrated with legacy systems through robust pipelines and strict security controls',
-      'Driving CSAT and operational efficiency gains via real-time, contextual AI support'
+      'End-to-end Customer Service App and Admin Portal on Anthropic Claude AI, integrated with legacy systems under strict security controls',
+      'SK Test Suite — autonomous application discovery, AI test generation, and self-healing automation across web, mobile, and API',
+      'Unified security and compliance assessment: OWASP Top 10, SAST/DAST, and RBI digital-lending validation in a single pipeline',
+      'Lending-critical coverage from loan lifecycle and eKYC through UPI, NACH, ECS, and credit bureau integration',
+      'Fraud and risk-rule validation alongside load, stress, and scalability testing',
+      'Release-readiness scoring and executive dashboards wired into DevSecOps CI/CD'
     ],
-    stack: ['Anthropic Claude', '.NET', 'Angular', 'Azure']
+    stack: [
+      'Anthropic Claude', '.NET', 'Angular', 'Azure',
+      'React', 'Next.js', 'Python', 'FastAPI', 'Playwright', 'Appium', 'MongoDB'
+    ]
   },
   {
     company: 'Sonata Software Ltd.',
@@ -171,7 +193,7 @@ export const experience: Role[] = [
     period: '2013 — 2014',
     location: 'Mumbai, India',
     highlights: [
-      'HRMS and Payroll deployed across Marriott, Westin, Four Points',
+      'HRMS and Payroll deployed across Marriott, Westin, Four Points, Celio',
       'Built mobile DMS for on-the-go document approvals'
     ],
     stack: ['.NET', 'SQL', 'Oracle PL/SQL']
@@ -182,7 +204,7 @@ export const experience: Role[] = [
     period: '2008 — 2013',
     location: 'Bhiwandi, India',
     highlights: [
-      '100+ ERP implementations across Maharashtra over 5 years',
+      '100+ implementations across Maharashtra over 5 years',
       'Production planning, fleet management, freight billing, route optimisation'
     ],
     stack: ['VB.NET', 'SQL', 'Oracle PL/SQL', 'VB6']
@@ -203,6 +225,20 @@ export const experience: Role[] = [
 
 export const projects: Project[] = [
   {
+    title: 'SK Test Suite',
+    blurb:
+      'Autonomous AI quality engineering for regulated lending — discovers applications, generates coverage, and validates security and RBI compliance in a single pipeline.',
+    context: 'SK Finance',
+    stack: ['React', 'Next.js', 'Python', 'FastAPI', 'Playwright', 'Appium', 'MongoDB'],
+    outcomes: [
+      'Self-healing test automation across web, mobile, and API',
+      'OWASP Top 10, SAST/DAST, and RBI digital-lending validation unified',
+      'Lending workflow coverage from eKYC to UPI, NACH, and credit bureau',
+      'Release-readiness scoring wired into DevSecOps CI/CD'
+    ],
+    visual: 'test-matrix'
+  },
+  {
     title: 'Self-Generative Chatbot Platform',
     blurb:
       'Auto-generates contextual chatbots from documents, audio, video, or text — embeddable via unique URL.',
@@ -212,7 +248,8 @@ export const projects: Project[] = [
       'Build time reduced from weeks to minutes',
       'Multi-AI provider redundancy across 4 vendors',
       'Plug-and-play embeddable URL deployment'
-    ]
+    ],
+    visual: 'conversation'
   },
   {
     title: 'VoC & CX Survey Tool',
@@ -223,7 +260,8 @@ export const projects: Project[] = [
       'Hands-free voice input with AI follow-up questions',
       'EN / JP / ZH multilingual support',
       'Automated SQL reporting + sentiment analysis'
-    ]
+    ],
+    visual: 'voice'
   },
   {
     title: 'Libertas — Cloud SQL Management',
@@ -235,7 +273,8 @@ export const projects: Project[] = [
       'Self-service database access for non-DBAs',
       'Real-time query monitoring via Extended Events',
       'Reduced operational dependency on DBA team'
-    ]
+    ],
+    visual: 'database'
   },
   {
     title: 'Microsoft Audit Platform — WPF → Angular',
@@ -246,7 +285,8 @@ export const projects: Project[] = [
       '196+ engineer team coordinated end-to-end',
       'Zero major delivery failures across the lifecycle',
       'Browser-based experience with feature parity'
-    ]
+    ],
+    visual: 'migration'
   },
   {
     title: 'Retail / Service / Maintenance ERP',
@@ -257,7 +297,8 @@ export const projects: Project[] = [
       'Deployed across Tanzania, Congo, and Mumbai',
       'Real-time multi-currency financial handling',
       'Localised configurations per country'
-    ]
+    ],
+    visual: 'network'
   },
   {
     title: 'Fincraft Banking Migration',
@@ -268,7 +309,115 @@ export const projects: Project[] = [
       'Zero data loss across 4 GB production migration',
       'VB6 → VB.NET frontend modernisation',
       'SLiM SDLC system supporting CMM Level 3 certification'
-    ]
+    ],
+    visual: 'schema'
+  }
+];
+
+/* ── Achievement metrics ───────────────────────────────────────────
+   Spec's six-category structure, populated only with figures that
+   trace back to the experience entries above. No rounded-up claims. */
+export type Metric = { value: string; label: string; note: string };
+
+export const metrics: Metric[] = [
+  { value: '30',   label: 'Years Experience',      note: 'In technology since 1996 · 20+ in software' },
+  { value: '100+', label: 'Enterprise Projects',   note: 'Software implementations delivered' },
+  { value: '196+', label: 'Engineering Leadership',note: 'Engineers led on one programme' },
+  { value: '3',    label: 'AI Solutions Delivered',note: 'Claude, Azure OpenAI, Oracle AI' },
+  { value: '23',   label: 'Platform Architectures',note: 'Business verticals unified' },
+  { value: '4',    label: 'Automation Programs',   note: 'Countries delivered across' },
+];
+
+/* ── Expertise ─────────────────────────────────────────────────── */
+export type Expertise = { title: string; blurb: string; items: string[] };
+
+export const expertise: Expertise[] = [
+  {
+    title: 'Artificial Intelligence',
+    blurb: 'Production LLM platforms — not prototypes. Retrieval design, prompt architecture, and multi-vendor redundancy.',
+    items: ['Generative AI', 'LLMs', 'Agentic Systems', 'RAG / KB Design']
+  },
+  {
+    title: 'Enterprise Architecture',
+    blurb: 'Consolidating fragmented legacy estates into coherent platforms that survive a decade of change.',
+    items: ['Scalable Platforms', 'Modernisation', 'Legacy Integration', 'System Design']
+  },
+  {
+    title: 'Cloud Engineering',
+    blurb: 'Azure-first distributed systems with the operational discipline to run them at enterprise scale.',
+    items: ['Azure', 'AWS', 'Distributed Systems', 'Azure DevOps']
+  },
+  {
+    title: 'Full-Stack Development',
+    blurb: 'Hands-on across the stack — still writing the first prototype when it is the fastest way to prove a design.',
+    items: ['Angular', 'TypeScript', '.NET / C#', 'Python']
+  },
+  {
+    title: 'Product Innovation',
+    blurb: 'Turning transformation mandates into shipped products with measurable commercial outcomes.',
+    items: ['AI Products', 'Digital Transformation', 'Discovery', 'Roadmapping']
+  },
+  {
+    title: 'Technical Leadership',
+    blurb: 'Building and steering engineering organisations through multi-country, multi-year delivery.',
+    items: ['Team Building', 'Delivery Excellence', 'Stakeholder Management', 'Agile / Scrum']
+  }
+];
+
+/* ── Career journey ────────────────────────────────────────────── */
+export type JourneyStage = { stage: string; period: string; detail: string };
+
+/* Years figures are anchored to two different starts, deliberately:
+   1996 = first technology role (infrastructure), Nov 2005 = first software role.
+   Total career reads 30 years; the software career reads 20+. */
+export const journey: JourneyStage[] = [
+  { stage: 'Infrastructure Foundation', period: '1996 — 2005', detail: 'Hardware, desktop support, and on-premises server deployment' },
+  { stage: 'Engineering Foundation', period: '2006 — 2013', detail: 'Core banking migrations and 100+ software implementations' },
+  { stage: 'Solution Architect',     period: '2013 — 2017', detail: 'HRMS, payroll, and multi-country retail ERP' },
+  { stage: 'Enterprise Architect',   period: '2018 — 2020', detail: 'Unified ERP across 23 business verticals' },
+  { stage: 'AI Strategist',          period: '2020 — 2026', detail: 'Self-generative chatbot and CX platforms' },
+  { stage: 'VP Technical',           period: '2026 — Now',  detail: 'Customer-service automation on Anthropic Claude' },
+];
+
+/* ── Thought leadership ────────────────────────────────────────────
+   PLACEHOLDER CONTENT — replace `articles` with real published pieces
+   (or delete the ThoughtLeadership section from page.tsx). Nothing
+   here is a real article; `placeholder: true` renders a visible badge
+   so it cannot ship unnoticed. */
+export type Article = {
+  title: string;
+  topic: string;
+  excerpt: string;
+  href?: string;
+  placeholder?: boolean;
+};
+
+export const articles: Article[] = [
+  { topic: 'AI Strategy',              title: 'Placeholder — your article title here', excerpt: 'Replace with a real published piece, or remove this section entirely.', placeholder: true },
+  { topic: 'Enterprise Transformation',title: 'Placeholder — your article title here', excerpt: 'Replace with a real published piece, or remove this section entirely.', placeholder: true },
+  { topic: 'Agentic AI',               title: 'Placeholder — your article title here', excerpt: 'Replace with a real published piece, or remove this section entirely.', placeholder: true },
+  { topic: 'Product Engineering',      title: 'Placeholder — your article title here', excerpt: 'Replace with a real published piece, or remove this section entirely.', placeholder: true },
+  { topic: 'Leadership',               title: 'Placeholder — your article title here', excerpt: 'Replace with a real published piece, or remove this section entirely.', placeholder: true },
+  { topic: 'Architecture Practices',   title: 'Placeholder — your article title here', excerpt: 'Replace with a real published piece, or remove this section entirely.', placeholder: true },
+];
+
+/* ── Testimonials ──────────────────────────────────────────────────
+   PLACEHOLDER CONTENT — never ship an invented quote attributed to a
+   real person. Replace with quotes you have explicit permission to
+   publish, or delete the Testimonials section from page.tsx. */
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  placeholder?: boolean;
+};
+
+export const testimonials: Testimonial[] = [
+  {
+    quote: 'Replace this with a real quote you have permission to publish. Until then this section is intentionally unattributed — no invented endorsements.',
+    name: 'Awaiting real attribution',
+    role: 'Add name, title, and company',
+    placeholder: true
   }
 ];
 

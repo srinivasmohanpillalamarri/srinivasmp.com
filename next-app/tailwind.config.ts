@@ -5,40 +5,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: {
-          DEFAULT: 'var(--ink)',
-          muted:   'var(--ink-muted)',
-          soft:    'var(--ink-soft)',
+        bg:      { DEFAULT: 'var(--bg)', surface: 'var(--surface)', 2: 'var(--surface-2)' },
+        txt:     { DEFAULT: 'var(--txt)', 2: 'var(--txt-2)', 3: 'var(--txt-3)' },
+        /* DEFAULT is the AA-safe text tone; `line` is the decorative bronze. */
+        bronze:  {
+          DEFAULT: 'var(--accent-text)',
+          line:    'var(--accent)',
+          h:       'var(--accent-h)',
+          bg:      'var(--accent-bg)',
+          bd:      'var(--accent-bd)',
         },
-        paper: {
-          DEFAULT: 'var(--paper)',
-          tint:    'var(--paper-tint)',
-          hi:      'var(--paper-hi)',
-        },
-        accent: {
-          DEFAULT: 'var(--accent)',
-          hi:      'var(--accent-hi)',
-          dim:     'var(--accent-dim)',
-        },
-        rule: 'var(--rule)',
+        line:    'var(--line)',
       },
       fontFamily: {
-        sans: ['var(--font-sans)', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['Arial', 'Helvetica Neue', 'Helvetica', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Georgia', 'Times New Roman', 'serif'],
+        sans:  ['var(--font-sans)', 'system-ui', '-apple-system', 'sans-serif'],
       },
-      letterSpacing: {
-        tightish: '-0.015em',
-        tighter2: '-0.025em',
-        tighter3: '-0.04em',
+      borderRadius: {
+        btn:  'var(--r-btn)',
+        el:   'var(--r-el)',
+        card: 'var(--r-card)',
+      },
+      boxShadow: {
+        soft: 'var(--shadow-sm)',
+        card: 'var(--shadow)',
+        lift: 'var(--shadow-lg)',
       },
       maxWidth: {
-        prose: '64ch',
-        page:  '1100px',
+        page: '1280px',
+        prose: '68ch',
       },
-      fontSize: {
-        '10xl': ['10rem', { lineHeight: '0.9' }],
-        '9xl':  ['8rem',  { lineHeight: '0.9' }],
-        '8xl':  ['6rem',  { lineHeight: '0.9' }],
+      spacing: {
+        section: '120px',
       },
     },
   },

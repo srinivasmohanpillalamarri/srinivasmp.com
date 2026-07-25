@@ -1,50 +1,69 @@
 import { Section } from './Section';
-import { Icon } from './Icon';
 import { projects } from '@/data/resume';
+import { ProjectVisual } from './ProjectVisual';
 
 export function Projects() {
   return (
     <Section
-      id="projects"
-      num="03"
-      name="Projects"
-      title="Selected work I architected or led."
+      id="work"
+      eyebrow="Featured Projects"
+      heading="Enterprise Platform and Migration Case Studies"
+      subhead="Platforms built, migrations survived."
+      intro="A selection of programmes where the architecture decision and the delivery outcome were the same problem."
     >
-      <ul className="grid gap-4 sm:grid-cols-2">
-        {projects.map((p, i) => (
-          <li key={p.title} data-reveal className={i % 2 === 1 ? 'sm:mt-8' : ''}>
-            <div className="project-card flex h-full flex-col gap-4 p-6 md:p-8">
+      <div className="space-y-24 md:space-y-32">
+        {projects.map((p, i) => {
+          const flipped = i % 2 === 1;
+          return (
+            <article
+              key={p.title}
+              data-reveal
+              className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20"
+            >
+              <div className={flipped ? 'lg:order-2' : ''}>
+                <ProjectVisual motif={p.visual} />
+              </div>
 
-              <header>
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="text-xl font-black tracking-tightish text-ink">{p.title}</h3>
-                  {p.context && (
-                    <span className="context-badge mt-0.5 shrink-0">{p.context}</span>
-                  )}
-                </div>
-              </header>
+              <div className={flipped ? 'lg:order-1' : ''}>
+                {p.context && <p className="eyebrow">{p.context}</p>}
 
-              <p className="text-[0.95rem] leading-relaxed text-ink-muted">{p.blurb}</p>
+                <h3
+                  className="mt-4 text-txt"
+                  style={{ fontSize: 'clamp(1.75rem, 2.6vw, 2.25rem)' }}
+                >
+                  {p.title}
+                </h3>
 
-              <ul className="space-y-2">
-                {p.outcomes.map((o) => (
-                  <li key={o} className="flex gap-2.5 text-sm leading-relaxed text-ink-muted">
-                    <Icon name="check" className="mt-1 h-3.5 w-3.5 shrink-0 text-accent" />
-                    <span>{o}</span>
-                  </li>
-                ))}
-              </ul>
+                <p className="mt-5 text-[1.0625rem] leading-[1.85] text-txt-2">{p.blurb}</p>
 
-              <ul className="mt-auto flex flex-wrap gap-1.5 border-t border-rule pt-5">
-                {p.stack.map((s) => (
-                  <li key={s}><span className="skill-pill">{s}</span></li>
-                ))}
-              </ul>
+                <ul className="mt-8 space-y-3.5">
+                  {p.outcomes.map((o) => (
+                    <li key={o} className="flex gap-3.5 text-[0.9875rem] leading-relaxed text-txt-2">
+                      <span
+                        className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full"
+                        style={{ background: 'var(--accent)' }}
+                      />
+                      {o}
+                    </li>
+                  ))}
+                </ul>
 
-            </div>
-          </li>
-        ))}
-      </ul>
+                <ul className="mt-8 flex flex-wrap gap-2">
+                  {p.stack.map((s) => (
+                    <li
+                      key={s}
+                      className="rounded-btn px-3 py-1.5 text-[13px] font-medium text-txt-3"
+                      style={{ border: '1px solid var(--line)', background: 'var(--surface)' }}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </Section>
   );
 }

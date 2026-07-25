@@ -1,0 +1,137 @@
+# srinivasmp.com (Next.js static export) → C:\projects\srinivasmp.com
+# Own IIS site at the domain root — so unlike the daaga sub-app pipelines there is
+# no NEXT_BASE_PATH to thread through and no base-path guard to enforce.
+#
+# One-time server prep: the IIS site must exist and point its physical path at
+# $(deployPath). Static files only — no Node service, no app pool runtime.
+trigger:
+  branches:
+    include: [main]
+  paths:
+    include:
+      - next-app/**
+      - .azure-pipelines/website.yml
+
+# TODO: replace with the actual dedicated pool name for this site.
+pool: SrinivasMP-VM-Pool
+
+variables:
+  - name: workingDir
+    value: '$(Build.SourcesDirectory)\next-app'
+  - name: deployPath
+    value: 'C:\projects\srinivasmp.com'
+
+steps:
+  - checkout: self
+    clean: false
+
+  - task: NodeTool@0
+    displayName: Use Node 22
+    inputs:
+      versionSpec: '22.x'
+
+  - task: PowerShell@2
+    displayName: Build (static export)
+    inputs:
+      targetType: inline
+      workingDirectory: '$(workingDir)'
+      script: |
+        # 'npm ci' rather than the daaga pipelines' 'npm install': the lockfile
+        # here is healthy and a deploy should be reproducible, not self-healing.
+        # If this ever fails on a lock mismatch, the fix is to commit the lock.
+        npm ci --no-audit --no-fund
+        npm run build
+
+        if (-not (Test-Path 'out\index.html')) {
+          throw 'Build failed: out\index.html not found (next.config.mjs must keep output: "export").'
+        }
+
+        # next/font self-hosts the Manrope and DM Serif Display woff2 files. If they
+        # ever stop emitting, the site silently falls back to system fonts — which
+        # is a visual regression no test would catch. Fail loudly instead.
+        $fonts = @(Get-ChildItem -Path 'out\_next\static\media' -Filter *.woff2 -ErrorAction SilentlyContinue)
+        if ($fonts.Count -lt 1) {
+          throw 'Build guard: no .woff2 files emitted — next/font did not run.'
+        }
+
+        # The social card and favicon are committed assets, not build output, so a
+        # bad merge could drop them without breaking the build.
+        foreach ($asset in @('out\og.png', 'out\icon.png', 'out\resume.pdf')) {
+          if (-not (Test-Path $asset)) { throw "Build guard: missing expected asset $asset" }
+        }
+
+        Write-Host "Build OK — $($fonts.Count) font files, index.html present" -ForegroundColor Green
+
+  - task: PowerShell@2
+    displayName: Add web.config for static serving
+    inputs:
+      targetType: inline
+      script: |
+        # Single-page static export. No SPA rewrite: unknown URLs must reach Next's
+        # exported 404.html rather than silently rendering the home page.
+        #
+        # Every mimeMap is preceded by <remove> — IIS throws HTTP 500.19 on a
+        # duplicate entry, and .woff2/.svg presence varies across IIS versions.
+        # Without the .woff2 map the fonts 404 and the typography falls back.
+        $cfg = @'
+        <?xml version="1.0" encoding="utf-8"?>
+        <configuration>
+          <system.webServer>
+            <httpErrors errorMode="Custom" existingResponse="Replace">
+              <remove statusCode="404" />
+              <error statusCode="404" path="/404.html" responseMode="ExecuteURL" />
+            </httpErrors>
+            <staticContent>
+              <remove fileExtension=".woff2" />
+              <mimeMap fileExtension=".woff2" mimeType="font/woff2" />
+              <remove fileExtension=".woff" />
+              <mimeMap fileExtension=".woff" mimeType="font/woff" />
+              <remove fileExtension=".svg" />
+              <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+              <remove fileExtension=".json" />
+              <mimeMap fileExtension=".json" mimeType="application/json" />
+              <remove fileExtension=".webmanifest" />
+              <mimeMap fileExtension=".webmanifest" mimeType="application/manifest+json" />
+            </staticContent>
+            <httpProtocol>
+              <customHeaders>
+                <add name="X-Content-Type-Options" value="nosniff" />
+                <add name="Referrer-Policy" value="strict-origin-when-cross-origin" />
+              </customHeaders>
+            </httpProtocol>
+          </system.webServer>
+          <!-- Content-hashed bundles: safe to cache hard. Everything outside this
+               path keeps IIS defaults so HTML and og.png stay revalidated. -->
+          <location path="_next/static">
+            <system.webServer>
+              <staticContent>
+                <clientCache cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" />
+              </staticContent>
+            </system.webServer>
+          </location>
+        </configuration>
+        '@
+        $cfg | Out-File "$(workingDir)\out\web.config" -Encoding utf8
+        Write-Host "web.config written" -ForegroundColor Green
+
+  - task: PowerShell@2
+    displayName: Deploy files
+    inputs:
+      targetType: inline
+      script: |
+        if (-not (Test-Path '$(deployPath)')) {
+          New-Item -ItemType Directory -Path '$(deployPath)' -Force | Out-Null
+        }
+
+        robocopy '$(workingDir)\out' '$(deployPath)' /MIR /NFL /NDL /NJH /NJS /NP
+        $rc = $LASTEXITCODE
+
+        # robocopy exit codes are a bit field: 0-7 are success//informational,
+        # 8+ are genuine failures. Log before exiting, or the message never runs.
+        if ($rc -ge 8) {
+          Write-Host "robocopy failed with exit code $rc" -ForegroundColor Red
+          exit $rc
+        }
+
+        Write-Host "Deployed to $(deployPath) (robocopy code $rc)" -ForegroundColor Green
+        exit 0

@@ -2,31 +2,68 @@ import { ReactNode } from 'react';
 
 type Props = {
   id: string;
-  num: string;
-  name: string;
-  title: string;
+  eyebrow: string;
+  /** Plain, descriptive phrase — this is what search and AI crawlers read. */
+  heading: string;
+  /** The editorial line. Set larger than the intro, it still reads as the
+   *  headline to a human while the H2 above carries the machine signal. */
+  subhead?: string;
+  intro?: string;
   children: ReactNode;
+  surface?: 'base' | 'raised';
+  align?: 'left' | 'center';
 };
 
-export function Section({ id, num, name, title, children }: Props) {
-  return (
-    <section id={id} className="border-b border-rule">
-      <div className="mx-auto max-w-page px-6 py-24 md:px-8 md:py-28">
+export function Section({
+  id,
+  eyebrow,
+  heading,
+  subhead,
+  intro,
+  children,
+  surface = 'base',
+  align = 'left',
+}: Props) {
+  const centered = align === 'center';
 
-        {/* Section header */}
-        <header className="mb-14" data-reveal>
-          <div className="mb-4 flex items-center gap-4">
-            <span className="font-mono text-[11px] font-bold uppercase tracking-[0.28em] text-accent">
-              /{num}
-            </span>
-            <div className="h-px flex-1 bg-rule" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-ink-soft">
-              {name}
-            </span>
-          </div>
-          <h2 className="max-w-3xl text-3xl font-black leading-tight tracking-tightish text-ink sm:text-4xl">
-            {title}
+  return (
+    <section
+      id={id}
+      style={{ background: surface === 'raised' ? 'var(--surface-2)' : 'var(--bg)' }}
+    >
+      <div className="mx-auto max-w-page px-6 py-[96px] md:px-12 md:py-section">
+
+        <header
+          className={`mb-16 md:mb-20 ${centered ? 'mx-auto text-center' : ''}`}
+          style={{ maxWidth: centered ? '760px' : undefined }}
+          data-reveal
+        >
+          <p className="eyebrow">{eyebrow}</p>
+          <h2
+            className="mt-5 text-txt"
+            style={{
+              fontSize: 'clamp(2.25rem, 4vw, 3rem)',
+              maxWidth: centered ? undefined : '840px',
+            }}
+          >
+            {heading}
           </h2>
+          {subhead && (
+            <p
+              className={`mt-4 font-serif font-medium text-txt-2 ${centered ? 'mx-auto' : ''}`}
+              style={{ fontSize: 'clamp(1.25rem, 2vw, 1.5rem)', maxWidth: '46ch' }}
+            >
+              {subhead}
+            </p>
+          )}
+          {intro && (
+            <p
+              className={`mt-6 text-[1.0625rem] leading-[1.8] text-txt-2 md:text-[1.125rem] ${centered ? 'mx-auto' : ''}`}
+              style={{ maxWidth: '62ch' }}
+            >
+              {intro}
+            </p>
+          )}
         </header>
 
         {children}

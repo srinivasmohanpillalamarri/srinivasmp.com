@@ -1,69 +1,85 @@
-import { Section } from './Section';
-import { Icon } from './Icon';
 import { profile } from '@/data/resume';
 
-const links = [
+const CHANNELS = [
   {
-    icon:     'mail'     as const,
-    label:    'Email',
-    value:    profile.email,
-    href:     `mailto:${profile.email}`,
+    label: 'Email',
+    value: profile.email,
+    href: `mailto:${profile.email}`,
+    note: 'Best for detailed briefs',
   },
   {
-    icon:     'phone'    as const,
-    label:    'Phone',
-    value:    profile.phone,
-    href:     `tel:${profile.phone.replace(/\s+/g, '')}`,
-  },
-  {
-    icon:     'linkedin' as const,
-    label:    'LinkedIn',
-    value:    'in/mpsrinivas',
-    href:     profile.links.linkedin,
+    label: 'LinkedIn',
+    value: 'in/mpsrinivas',
+    href: profile.links.linkedin,
+    note: 'Connect and message',
     external: true,
+  },
+  {
+    label: 'Schedule a discussion',
+    value: profile.phone,
+    href: `tel:${profile.phone.replace(/\s+/g, '')}`,
+    note: 'Comfortable across time zones',
   },
 ];
 
 export function Contact() {
   return (
-    <Section
-      id="contact"
-      num="05"
-      name="Contact"
-      title="Open to senior IC, lead, and architect roles."
-    >
-      <div className="space-y-10">
+    <section id="contact" style={{ background: 'var(--bg)' }}>
+      <div className="mx-auto max-w-page px-6 py-[96px] md:px-12 md:py-section">
 
-        <p className="max-w-prose text-lg leading-relaxed text-ink-muted" data-reveal>
-          Particularly interested in roles involving Anthropic Claude, Azure OpenAI, or large-scale
-          modernisation programmes. Based in Bangalore — comfortable across global time zones.
-        </p>
+        <div className="mx-auto mb-16 text-center md:mb-20" style={{ maxWidth: '720px' }} data-reveal>
+          <p className="eyebrow">Contact</p>
+          <h2
+            className="mt-5 text-txt"
+            style={{ fontSize: 'clamp(2.25rem, 4.4vw, 3.25rem)' }}
+          >
+            Let&apos;s Build the Future Together
+          </h2>
+          <p className="mx-auto mt-6 text-[1.0625rem] leading-[1.8] text-txt-2 md:text-[1.125rem]">
+            Open to senior IC, lead, and architect roles — particularly enterprise AI,
+            platform modernisation, and engineering leadership. Based in{' '}
+            {profile.location.replace(', India', '')}, comfortable across global time zones.
+          </p>
+        </div>
 
-        <ul className="grid gap-4 sm:grid-cols-3" data-reveal>
-          {links.map((c) => (
-            <li key={c.label}>
-              <a
-                href={c.href}
-                {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="group flex items-center gap-4 border border-rule bg-paper-tint p-6 transition-all hover:border-accent"
+        <div className="grid gap-5 md:grid-cols-3">
+          {CHANNELS.map((c, i) => (
+            <a
+              key={c.label}
+              href={c.href}
+              {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              data-reveal
+              className={`lift group flex flex-col rounded-card p-8 ${['d1','d2','d3'][i]}`}
+              style={{
+                background: 'var(--surface)',
+                border: '1px solid var(--line)',
+                boxShadow: 'var(--shadow-sm)',
+              }}
+            >
+              <p className="eyebrow">{c.label}</p>
+              <p
+                className="mt-5 text-[1.0625rem] font-semibold text-txt transition-colors group-hover:text-bronze"
+                style={{ wordBreak: 'break-word' }}
               >
-                <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center border border-rule text-ink-soft transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-white">
-                  <Icon name={c.icon} className="h-5 w-5" />
-                </span>
-                <span>
-                  <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
-                    {c.label}
-                  </span>
-                  <span className="mt-1 block break-all text-sm font-semibold text-ink">
-                    {c.value}
-                  </span>
-                </span>
-              </a>
-            </li>
+                {c.value}
+              </p>
+              <p className="mt-2 text-[0.9375rem] text-txt-3">{c.note}</p>
+            </a>
           ))}
-        </ul>
+        </div>
+
+        <div className="mt-14 text-center" data-reveal>
+          <a
+            href={profile.resumePdf}
+            download
+            className="inline-flex items-center gap-2.5 rounded-btn px-8 py-4 text-[15px] font-semibold transition-colors"
+            style={{ background: 'var(--accent-btn)', color: 'var(--on-accent)', boxShadow: 'var(--shadow)' }}
+          >
+            Download Résumé
+          </a>
+        </div>
 
       </div>
-    </Section>
+    </section>
   );
 }

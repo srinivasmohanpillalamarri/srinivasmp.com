@@ -1,7 +1,7 @@
 # srinivasmp.com (Next.js static export) → C:\projects\srinivasmp.com
 #
 # Own IIS site at the domain root, so there is no NEXT_BASE_PATH to thread
-# through and no base-path guard — unlike the daaga sub-app pipelines.
+# through and no base-path guard.
 #
 # TLS is live (Certera cert, expires 8 Feb 2027). The HTTP→HTTPS redirect is
 # written into web.config here rather than clicked into IIS Manager, so it is
@@ -20,9 +20,11 @@ trigger:
       - next-app/**
       - .azure-pipelines/website.yml
 
-# Same self-hosted pool as the daaga.in pipelines — the agent runs on the box
-# that serves both sites, which is why it can robocopy straight to deployPath.
-pool: Daaga-VM-Pool
+# Self-hosted agent pool for this site. The agent must run on the server that
+# hosts srinivasmp.com, so the deploy step can robocopy straight to deployPath.
+#
+# TODO: set the agent pool name.
+pool: REPLACE-WITH-YOUR-POOL-NAME
 
 variables:
   - name: workingDir
